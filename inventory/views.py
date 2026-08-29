@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -44,6 +45,35 @@ class ProductViewSet(viewsets.ModelViewSet):
         IsAdmin | IsInventoryManager,
     ]
 
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    filterset_fields = [
+        "category",
+        "is_active",
+    ]
+
+    search_fields = [
+        "name",
+        "sku",
+        "description",
+    ]
+
+    ordering_fields = [
+        "name",
+        "price",
+        "created_at",
+        "updated_at",
+        "is_active",
+    ]
+
+    ordering = [
+        "name",
+    ]
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -78,3 +108,4 @@ class CategoryViewSet(viewsets.ModelViewSet):
     ordering = [
         "name",
     ]
+
