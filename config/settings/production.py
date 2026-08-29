@@ -4,8 +4,7 @@ Production settings.
 
 from .base import *
 
-
-DEBUG = False
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     # Add production domain here later
