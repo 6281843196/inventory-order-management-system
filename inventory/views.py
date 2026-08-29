@@ -1,12 +1,13 @@
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from accounts.permissions import IsAdmin, IsInventoryManager
 
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Category, Product
+from .serializers import CategorySerializer, ProductSerializer
 
 
 class InventoryTestView(APIView):
@@ -43,3 +44,68 @@ class ProductViewSet(viewsets.ModelViewSet):
         IsAuthenticated,
         IsAdmin | IsInventoryManager,
     ]
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    filterset_fields = [
+        "category",
+        "is_active",
+    ]
+
+    search_fields = [
+        "name",
+        "sku",
+        "description",
+    ]
+
+    ordering_fields = [
+        "name",
+        "price",
+        "created_at",
+        "updated_at",
+        "is_active",
+    ]
+
+    ordering = [
+        "name",
+    ]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    CRUD API for categories.
+    """
+
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    permission_classes = [
+        IsAuthenticated,
+        IsAdmin | IsInventoryManager,
+    ]
+
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    search_fields = [
+        "name",
+        "description",
+    ]
+
+    ordering_fields = [
+        "name",
+        "created_at",
+        "updated_at",
+        "is_active",
+    ]
+
+    ordering = [
+        "name",
+    ]
+
