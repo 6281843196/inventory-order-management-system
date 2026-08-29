@@ -38,7 +38,15 @@ class Product(models.Model):
     Represents a product maintained in the inventory.
     """
 
-    name = models.CharField(max_length=255)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.PROTECT,
+        related_name="products",
+    )
+
+    name = models.CharField(
+        max_length=255,
+    )
 
     sku = models.CharField(
         max_length=100,
@@ -57,7 +65,7 @@ class Product(models.Model):
         max_digits=10,
         decimal_places=2,
         validators=[
-            MinValueValidator(Decimal("0.00")),
+            MinValueValidator(Decimal("0.01")),
         ],
     )
 
