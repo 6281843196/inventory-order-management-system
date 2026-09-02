@@ -7,9 +7,8 @@ from .base import *
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
-    # Add production domain here later
+    "inventory-order-management-system-jq42.onrender.com",
 ]
-
 
 DATABASES = {
     'default': {
